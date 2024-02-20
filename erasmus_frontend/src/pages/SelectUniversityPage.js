@@ -34,12 +34,15 @@ const SelectUniversityPage = (props) => {
                 }
             })
             .then((response) => {
+                console.log(response);
                 let tmpUniversities = [];
                 Object.entries(response).forEach(([key, value]) => {
-                    if (value.university === universityName) {
+                    if (value.university.trim() === universityName.trim()) {
                         tmpUniversities.push(value);
                     }
                 });
+
+                console.log(tmpUniversities);
                 
                 let tmpScores = [];
                 tmpUniversities.forEach((university) => {
