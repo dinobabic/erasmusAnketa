@@ -5,6 +5,8 @@ const SelectUniversityPage = (props) => {
 
     const {setSelectedUniversity, selectedUniversity, universities} = {...props};
     const navigate = useNavigate();
+    const [universityName, setUniversityName] = useState("");
+    const [scores, setScores] = useState();
     
 
     function updateUniversity(id) {
@@ -17,10 +19,63 @@ const SelectUniversityPage = (props) => {
         document.getElementById(id).classList.remove("bg-white");
     }
 
+    function showScores() {
+        const options = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }
+
+        fetch("https://erasmusanketa-default-rtdb.europe-west1.firebasedatabase.app/UserData.json", options)
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then((response) => {
+                let tmpUniversities = [];
+                Object.entries(response).forEach(([key, value]) => {
+                    if (value.university === universityName) {
+                        tmpUniversities.push(value);
+                    }
+                });
+                
+                let tmpScores = [];
+                tmpUniversities.forEach((university) => {
+                    let score = university.averageGrade * 1000;
+                    if (university.certificate !== "B2") 
+                        score += 100;
+                    tmpScores.push(score);
+                })
+                
+                setScores(tmpScores);
+            });
+    }
+
     return (
         <div>
             <div className='h-16 text-center bg-slate-700 flex justify-center items-center'>
                 <p className='text-3xl font-semibold text-white'>Erasmus Anketa</p>
+            </div>
+
+            <div className='w-[800px] mx-auto my-16'>
+                <p className='font-sembold text-center text-2xl pb-4'>Pregled rezultata se sveučilište</p>
+                <label htmlFor='university-name' className='text-lg font-semibold'>Unesite ime sveučilišta (kopirajte iz donje liste): </label>
+                <input 
+                    value={universityName}
+                    onChange={(event) => {setUniversityName(event.target.value);}}
+                    type='text' id='university-name' name='university-name' className='focus:outline-none py-2 px-4 shadow-md'/>
+                <button onClick={showScores} className='bg-green-500 ml-4 text-white font-semibold rounded-md py-2 px-4 text-md'>Prikaži</button>
+                {scores && scores.length > 0 && <div className='flex gap-4 flex-col'>
+                    {scores.map((score, index) => {
+                        return (
+                            <div key={index}>
+                                <p>{index+1}. {score}</p>
+                            </div>
+                        );
+                    })}
+                </div>}
             </div>
 
             <div className='w-[800px] mx-auto shadow-lg pb-4 mt-16'>
