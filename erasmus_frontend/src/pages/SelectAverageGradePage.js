@@ -15,8 +15,11 @@ const SelectAverageGradePage = (props) => {
                 <p className='text-2xl font-semibold text-center py-8'>Unesite težinski prosjek ocjena:</p>
                 <div className='flex justify-end mx-8'>
                     <button className='text-xl font-semibold text-white bg-green-500 rounded-md py-2 px-4' onClick={() => {
-                        setShouldSave(true);
-                        navigate("/results");
+                        const num = Number(averageGrade);
+                        if (!isNaN(num) && num > 1 && num < 5) {
+                            setShouldSave(true);
+                            navigate("/results");
+                        }
                     }}>Nastavi</button>
                 </div>
                 <div className='mx-8 shadow-md px-8 py-2 flex flex-row gap-4 items-center mt-4'>
