@@ -41,8 +41,6 @@ const SelectUniversityPage = (props) => {
                         tmpUniversities.push(value);
                     }
                 });
-
-                console.log(tmpUniversities);
                 
                 let tmpScores = [];
                 tmpUniversities.forEach((university) => {
@@ -52,7 +50,7 @@ const SelectUniversityPage = (props) => {
                     tmpScores.push(score);
                 })
                 
-                setScores(tmpScores);
+                setScores(tmpScores.sort((a, b) => b-a));
             });
     }
 
