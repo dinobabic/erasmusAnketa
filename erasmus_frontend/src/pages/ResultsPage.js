@@ -101,6 +101,12 @@ const ResultsPage = (props) => {
             <div className='w-[800px] mx-auto shadow-lg mt-16 pb-4'>
                 <p className='text-2xl font-semibold text-center py-8'>Rezultati</p>
 
+                <div className='flex justify-end mx-8'>
+                    <button className='text-xl font-semibold text-white bg-green-500 rounded-md py-2 px-4' onClick={() => {
+                        navigate("/university-selcet");
+                    }}>Povratak na odabir sveučilišta</button>
+                </div>
+
                 <div className='flex flex-col gap-2 shadow-md mx-4 my-6 p-6'>
                     {finalResults && finalResults.map((result, index) => {
                         return (
